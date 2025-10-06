@@ -1,22 +1,17 @@
 package com.product.delivery.system;
-import com.product.delivery.system.models.Product;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.io.*;
-import java.math.BigDecimal;
-
 import static org.junit.Assert.*;
 
 /**
  * Tests for App.java entry-point flows which read from stdin and print to stdout.
- *
  * Notes:
  * - Tests simulate stdin using ByteArrayInputStream.
  * - Tests capture stdout/stderr using ByteArrayOutputStream.
  * - These tests are intentionally defensive: they assert substrings rather than exact lines,
- *   because ProductDeliverySystem is a singleton and may accumulate state between tests.
+ * - because ProductDeliverySystem is a singleton and may accumulate state between tests.
  */
 public class AppTest
 {
@@ -26,7 +21,8 @@ public class AppTest
     private ByteArrayOutputStream outContent;
     private ByteArrayOutputStream errContent;
     @Before
-    public void setUpStreams() {
+    public void setUpStreams()
+    {
         outContent = new ByteArrayOutputStream();
         errContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));

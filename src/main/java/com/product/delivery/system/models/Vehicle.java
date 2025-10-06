@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Vehicle
 {
-    private String id;
+    private final String id;
     private String vehicleLabel;
     private BigDecimal payloadCapacity;
     private VehicleSpeed vehicleSpeed;
