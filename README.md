@@ -71,7 +71,7 @@ mvn compile exec:java -Dexec.mainClass="com.product.delivery.system.App"
 ---
 
 ## Coverage
-[![Codecov](https://codecov.io/gh/sominshah/PackageDeliverySystem/branch/main/graph/badge.svg?)](https://codecov.io/gh/sominshah/PackageDeliverySystem)
+[![Codecov](https://codecov.io/gh/sominshah/PackageDeliverySystem/branch/main/graph/badge.svg?token=917342f3-478e-4935-a8f7-2b696ecf1165)](https://codecov.io/gh/sominshah/PackageDeliverySystem)
 
 ---
 
