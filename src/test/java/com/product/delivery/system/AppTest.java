@@ -1,8 +1,12 @@
 package com.product.delivery.system;
+import com.product.delivery.system.models.Product;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.*;
+import java.math.BigDecimal;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -36,9 +40,47 @@ public class AppTest
         System.setErr(originalErr);
         System.setIn(originalIn);
     }
+    @Test
+    public void testReadHeaderValidInput() {
+        String input = "100 3\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        int[] header = App.readHeader(new java.util.Scanner(System.in));
+        assertNotNull(header);
+        assertEquals(100, header[0]);
+        assertEquals(3, header[1]);
+    }
+    @Test
+    public void testReadHeaderInvalidInput() {
+        String input = "invalid input\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        int[] header = App.readHeader(new java.util.Scanner(System.in));
+        assertNull(header);
+        String errOutput = errContent.toString();
+        assertTrue(errOutput.contains("Invalid input"));
+    }
 
     @Test
-    public void testFirstChallenge_readsInputAndPrintsCosts()
+    public void testReadProductsAddsProductsToSystem()
+    {
+        String input = "PKG_A 10 20 OFR001\nPKG_B 5 50\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        ProductDeliverySystem pds = ProductDeliverySystem.getInstance(new BigDecimal(100));
+        List<Product> products = App.readProducts(new java.util.Scanner(System.in), 2, pds);
+        assertEquals(2, products.size());
+        assertEquals("PKG_A", products.get(0).getPackageLabel());
+        assertEquals("PKG_B", products.get(1).getPackageLabel());
+    }
+
+    @Test
+    public void testReadVehiclesValidInput() {
+        String input = "2 50 200\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        boolean result = App.readVehicles(new java.util.Scanner(System.in));
+        assertTrue(result);
+    }
+
+    @Test
+    public void testFirstChallengeReadsInputAndPrintsCosts()
     {
         String input =
                 "100 3\n" +
@@ -54,8 +96,20 @@ public class AppTest
         assertTrue("Should contain numeric totals", output.matches("(?s).*\\d+.*"));
     }
 
+
     @Test
-    public void testSecondChallenge_readsFullInputAndSchedules()
+    public void testFirstChallengeRunsWithoutException() {
+        String input = "100 1\nPKG_X 10 20 OFR001\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        App.firstChallenge();
+        String output = outContent.toString();
+        assertTrue(output.contains("PKG_X"));
+    }
+
+
+
+    @Test
+    public void testSecondChallengeReadsFullInputAndSchedules()
     {
         String input =
                 "100 5\n" +

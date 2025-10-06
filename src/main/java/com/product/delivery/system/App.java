@@ -1,184 +1,118 @@
 package com.product.delivery.system;
 import com.product.delivery.system.models.Product;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class App
 {
-    public static void firstChallenge()
+
+
+    public static int [] readHeader(Scanner scanner)
     {
-        Scanner scanner = new Scanner(System.in);
-        ProductDeliverySystem packageDeliverySystem=null;
-        try
+        while (scanner.hasNextLine())
         {
-            String firstLine = null;
-            while (scanner.hasNextLine()) {
-                firstLine = scanner.nextLine();
-                if (firstLine != null) {
-                    firstLine = firstLine.trim();
-                    if (!firstLine.isEmpty()) break;
-                }
-            }
-            if (firstLine == null || firstLine.isEmpty()) return;
-            String[] strArr = firstLine.split("\\s+");
-            if (strArr.length != 2) {
-                System.err.println("Invalid first line.");
-                System.out.println("Expected Input: <base_delivery_cost> <no_of_packages>");
-                return;
-            }
-
-            int numberOfPackages;
-            int baseDeliveryCost;
-            try {
-                baseDeliveryCost = Integer.parseInt(strArr[0]);
-                numberOfPackages = Integer.parseInt(strArr[1]);
-            } catch (Exception e) {
-                System.err.println("Invalid first line.");
-                System.out.println("Expected Input: <base_delivery_cost> <no_of_packages>");
-                return;
-            }
-
-            packageDeliverySystem = ProductDeliverySystem.getInstance(new BigDecimal(baseDeliveryCost));
-            int readCount = 0;
-            while (readCount < numberOfPackages && scanner.hasNextLine()) {
-                String packageInfo = scanner.nextLine();
-                if (packageInfo == null) break;
-                packageInfo = packageInfo.trim();
-                if (packageInfo.isEmpty()) continue;
-                //System.out.println("Package " + packageInfo);
-                String[] packageInfoArray = packageInfo.split("\\s+");
-
-                //System.out.println("Array Size: " + packageInfoArray.length + " Array: " + Arrays.toString(packageInfoArray));
-                if (packageInfoArray.length < 3) {
-                    continue;
-                }
-
-
-                try {
-                    Product product = new Product();
-                    product.setPackageLabel(packageInfoArray[0].trim());
-                    product.setWeight(new BigDecimal(packageInfoArray[1].trim()));
-                    product.setDistance(new BigDecimal(packageInfoArray[2].trim()));
-                    String couponCode = (packageInfoArray.length >= 4) ? packageInfoArray[3].trim() : "NA";
-                    packageDeliverySystem.addProduct(couponCode, product);
-                    readCount++;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (readCount < numberOfPackages)
+            String firstLine = scanner.nextLine().trim();
+            if(!firstLine.isEmpty())
             {
-                System.err.println("Warning: expected " + numberOfPackages + " packages but read " + readCount);
-            return;
+                String [] firstLineSplit = firstLine.split("\\s+");
+                    if (firstLineSplit.length!= 2) break;
+                    try
+                    {
+                        return new int[]{Integer.parseInt(firstLineSplit[0]), Integer.parseInt(firstLineSplit[1])};
+                    } catch (NumberFormatException ignored) {
+
+                    }
+
+
             }
-
-            packageDeliverySystem.printDeliveryCost();
-        }finally {
-            scanner.close();
         }
-
-
+        System.err.println("Invalid input. Expected: <base_delivery_cost> <no_of_packages>");
+        return null;
     }
 
-
-
-
-    public static void secondChallenge()
+    public static List<Product> readProducts(Scanner scanner,int numberOfPackages, ProductDeliverySystem productDeliverySystem)
     {
-        Scanner scanner = new Scanner(System.in);
-        ProductDeliverySystem packageDeliverySystem=null;
-        try {
-            String firstLine = null;
-            while (scanner.hasNextLine()) {
-                firstLine = scanner.nextLine();
-                if (firstLine != null) {
-                    firstLine = firstLine.trim();
-                    if (!firstLine.isEmpty()) break;
-                }
-            }
-            if (firstLine == null || firstLine.isEmpty()) return;
-            String[] strArr = firstLine.split("\\s+");
-            if (strArr.length != 2) {
-                System.err.println("Invalid first line.");
-                System.out.println("Expected Input: <base_delivery_cost> <no_of_packages>");
-                return;
-            }
-
-            int numberOfPackages;
-            int baseDeliveryCost;
-            try {
-                baseDeliveryCost = Integer.parseInt(strArr[0]);
-                numberOfPackages = Integer.parseInt(strArr[1]);
-            } catch (Exception e) {
-                System.err.println("Invalid first line.");
-                System.out.println("Expected Input: <base_delivery_cost> <no_of_packages>");
-                return;
-            }
-
-            packageDeliverySystem = ProductDeliverySystem.getInstance(new BigDecimal(baseDeliveryCost));
-            int readCount = 0;
-            while (readCount < numberOfPackages && scanner.hasNextLine())
+        List<Product> products = new ArrayList<>();
+        int counter = 0;
+        while (counter < numberOfPackages && scanner.hasNextLine())
+        {
+            String line = scanner.nextLine().trim();
+            if(line.isEmpty())continue;
+            String[] lineSplit = line.split("\\s+");
+            if(lineSplit.length < 3)continue;
+            try
             {
-                String packageInfo = scanner.nextLine();
-                if (packageInfo == null) break;
-                packageInfo = packageInfo.trim();
-                if (packageInfo.isEmpty()) continue;
-                String[] packageInfoArray = packageInfo.split("\\s+");
-                if (packageInfoArray.length < 3) continue;
-                try {
-                    Product product = new Product();
-                    product.setPackageLabel(packageInfoArray[0].trim());
-                    product.setWeight(new BigDecimal(packageInfoArray[1].trim()));
-                    product.setDistance(new BigDecimal(packageInfoArray[2].trim()));
-                    String couponCode = (packageInfoArray.length >= 4) ? packageInfoArray[3].trim() : "NA";
-                    packageDeliverySystem.addProduct(couponCode, product);
-                    readCount++;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (readCount < numberOfPackages)
+                Product product = new Product();
+                product.setPackageLabel(lineSplit[0]);
+                product.setWeight(new BigDecimal(lineSplit[1]));
+                product.setDistance(new BigDecimal(lineSplit[2]));
+                String couponCode = (lineSplit.length >= 4) ? lineSplit[3] : "NA";
+                productDeliverySystem.addProduct(couponCode, product);
+                products.add(product);
+                counter++;
+            }catch (Exception e)
             {
-                System.err.println("Warning: expected " + numberOfPackages + " packages but read " + readCount);
-                return;
+                System.err.println("Invalid product input: " + line);
             }
 
-
-            if(!scanner.hasNextLine())
-            {
-                System.err.println("Vehicle Information need to  solve the second challenge, last line of input expected: <no_of_vehicles> <max_speed> <max_carriable_weight>");
-                return;
-            }
-
-            String vehicleInfo = scanner.nextLine();
-            if (vehicleInfo == null || vehicleInfo.isEmpty())
-            {
-                System.err.println("Vehicle Information need to  solve the second challenge, last line of input expected: <no_of_vehicles> <max_speed> <max_carriable_weight>");
-                return;
-            }
-            vehicleInfo = vehicleInfo.trim();
-            String[] packageInfoArray = vehicleInfo.split("\\s+");
-            if (packageInfoArray.length < 3)
-            {
-                    System.err.println("Vehicle Information needed to  solve the second challenge, last line of input expected: <no_of_vehicles> <max_speed> <max_carriable_weight>");
-                    return;
-            }
-
-            int numberOfVehicles= Integer.parseInt(packageInfoArray[0].trim());
-            int maxSpeed = Integer.parseInt(packageInfoArray[1].trim());
-            int maxCarriableWeight = Integer.parseInt(packageInfoArray[2].trim());
-
-            ProductDeliverySystem.addVehicles(numberOfVehicles,maxSpeed, maxCarriableWeight);
-            packageDeliverySystem.printDeliveryCostWithEstimatedTime();
-        }finally {
-            scanner.close();
         }
-
+        if (counter < numberOfPackages) {
+            System.err.println("Warning: expected " + numberOfPackages + " packages but read " + counter);
+        }
+        return products;
 
     }
 
+    public static boolean readVehicles(Scanner scanner)
+    {
+        if (!scanner.hasNextLine()) {
+            System.err.println("Vehicle information missing: <no_of_vehicles> <max_speed> <max_carriable_weight>");
+            return false;
+        }
+        String vehicleLine = scanner.nextLine().trim();
+        String[] parts = vehicleLine.split("\\s+");
+        if (parts.length < 3) {
+            System.err.println("Vehicle information incomplete: <no_of_vehicles> <max_speed> <max_carriable_weight>");
+            return false;
+        }
 
+        try {
+            int numberOfVehicles = Integer.parseInt(parts[0]);
+            int maxSpeed = Integer.parseInt(parts[1]);
+            int maxCarriableWeight = Integer.parseInt(parts[2]);
+            ProductDeliverySystem.addVehicles(numberOfVehicles, maxSpeed, maxCarriableWeight);
+            return true;
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid vehicle numbers");
+            return false;
+        }
+    }
+    public static void firstChallenge() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int[] header = readHeader(scanner);
+            if (header == null) return;
 
+            ProductDeliverySystem system = ProductDeliverySystem.getInstance(new BigDecimal(header[0]));
+            readProducts(scanner, header[1], system);
+
+            system.printDeliveryCost();
+        }
+    }
+    public static void secondChallenge() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int[] header = readHeader(scanner);
+            if (header == null) return;
+
+            ProductDeliverySystem system = ProductDeliverySystem.getInstance(new BigDecimal(header[0]));
+            readProducts(scanner, header[1], system);
+
+            if (!readVehicles(scanner)) return;
+
+            system.printDeliveryCostWithEstimatedTime();
+        }
+    }
 
 
     public static void main(String[] args)
@@ -232,88 +166,4 @@ public class App
     } catch (Exception ignored) { }
 }
 
-
-
-
-
-//    public static void printSolutionForFirstProblem()
-//    {
-//        try
-//        {
-//            System.out.println("Solution For First Problem");
-//
-//            ProductDeliverySystem packageDeliverySystem = ProductDeliverySystem.getInstance(new BigDecimal(100));
-//            Product product = new Product();
-//            product.setPackageLabel("PKG1");
-//            product.setWeight(new BigDecimal(5));
-//            product.setDistance(new BigDecimal(5));
-//            packageDeliverySystem.addProduct("OFFR001",product);
-//
-//            product = new Product();
-//            product.setPackageLabel("PKG2");
-//            product.setWeight(new BigDecimal(15));
-//            product.setDistance(new BigDecimal(5));
-//            packageDeliverySystem.addProduct("OFFR002",product);
-//
-//            product = new Product();
-//            product.setPackageLabel("PKG3");
-//            product.setWeight(new BigDecimal(10));
-//            product.setDistance(new BigDecimal(100));
-//            packageDeliverySystem.addProduct("OFFR003",product);
-//
-//            packageDeliverySystem.printDeliveryCost();
-//        }catch(Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//    }
-
-//
-//    public static void printSolutionForSecondProblem()
-//    {
-//        try
-//        {
-//            System.out.println("\n\n \t\t-- Solution For Second Problem \t\t\n");
-//            ProductDeliverySystem packageDeliverySystem = ProductDeliverySystem.getInstance(new BigDecimal(100));
-//            Product product = new Product();
-//            product.setPackageLabel("PKG1");
-//            product.setWeight(new BigDecimal(50));
-//            product.setDistance(new BigDecimal(30));
-//            packageDeliverySystem.addProduct("OFFR001",product);
-//
-//            product = new Product();
-//            product.setPackageLabel("PKG2");
-//            product.setWeight(new BigDecimal(75));
-//            product.setDistance(new BigDecimal(125));
-//            packageDeliverySystem.addProduct("OFFR0008",product);
-//
-//            product = new Product();
-//            product.setPackageLabel("PKG3");
-//            product.setWeight(new BigDecimal(175));
-//            product.setDistance(new BigDecimal(100));
-//            packageDeliverySystem.addProduct("OFFR003",product);
-//
-//            product = new Product();
-//            product.setPackageLabel("PKG4");
-//            product.setWeight(new BigDecimal(110));
-//            product.setDistance(new BigDecimal(60));
-//            packageDeliverySystem.addProduct("OFFR002",product);
-//
-//            product = new Product();
-//            product.setPackageLabel("PKG5");
-//            product.setWeight(new BigDecimal(155));
-//            product.setDistance(new BigDecimal(95));
-//            packageDeliverySystem.addProduct("NA",product);
-//
-//            ProductDeliverySystem.addVehicles(2,70, 200);
-//
-//            packageDeliverySystem.printDeliveryCostWithEstimatedTime();
-//        }catch(Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
 }
