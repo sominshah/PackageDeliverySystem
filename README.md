@@ -70,6 +70,11 @@ mvn compile exec:java -Dexec.mainClass="com.product.delivery.system.App"
 
 ---
 
+## Coverage
+[![Codecov](https://codecov.io/gh/sominshah/PackageDeliverySystem/branch/main/graph/badge.svg?)](https://codecov.io/gh/sominshah/PackageDeliverySystem)
+
+---
+
 ## Example Input (Second Challenge)
 
 ```
