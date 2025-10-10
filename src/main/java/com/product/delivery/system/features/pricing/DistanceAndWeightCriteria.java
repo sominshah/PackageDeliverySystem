@@ -4,10 +4,10 @@ import com.product.delivery.system.models.Product;
 import java.math.BigDecimal;
 public class DistanceAndWeightCriteria implements Criteria<Product>
 {
-    private BigDecimal minDistance;
-    private BigDecimal maxDistance;
-    private BigDecimal minWeight;
-    private BigDecimal maxWeight;
+    private final BigDecimal minDistance;
+    private final BigDecimal maxDistance;
+    private final BigDecimal minWeight;
+    private final BigDecimal maxWeight;
     public DistanceAndWeightCriteria(BigDecimal minDistance, BigDecimal maxDistance, BigDecimal minWeight, BigDecimal maxWeight)
     {
         this.minDistance = minDistance;
@@ -15,39 +15,6 @@ public class DistanceAndWeightCriteria implements Criteria<Product>
         this.minWeight = minWeight;
         this.maxWeight = maxWeight;
     }
-    public BigDecimal getMinDistance()
-    {
-        return minDistance;
-    }
-    public void setMinDistance(BigDecimal minDistance)
-    {
-        this.minDistance = minDistance;
-    }
-    public BigDecimal getMaxDistance()
-    {
-        return maxDistance;
-    }
-    public void setMaxDistance(BigDecimal maxDistance)
-    {
-        this.maxDistance = maxDistance;
-    }
-    public BigDecimal getMinWeight()
-    {
-        return minWeight;
-    }
-    public void setMinWeight(BigDecimal minWeight)
-    {
-        this.minWeight = minWeight;
-    }
-    public BigDecimal getMaxWeight()
-    {
-        return maxWeight;
-    }
-    public void setMaxWeight(BigDecimal maxWeight)
-    {
-        this.maxWeight = maxWeight;
-    }
-
     public boolean isApplicable(Product p)
     {
         if (p==null) return false;

@@ -17,8 +17,6 @@ public class Vehicle
         this.payloadCapacity = payloadCapacity;
         this.vehicleLabel = vehicleLabel;
     }
-
-
     public String getId()
     {
         return id;

@@ -4,7 +4,6 @@ import com.product.delivery.system.models.Coupon;
 import com.product.delivery.system.models.Product;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 public class CouponService
 {
@@ -22,14 +21,6 @@ public class CouponService
         return coupons.size();
     }
 
-//    public Coupon getBestCoupon(Product p)
-//    {
-//        return coupons.stream()
-//                .filter(c -> c.getCriteria().isApplicable(p))
-//                .max(Comparator.comparing(c -> c.getDiscountPercent()))
-//                .orElse(null);
-//    }
-
     public void setIfCouponApplicable(String couponLabel,Product product)
     {
         if (product == null || couponLabel == null) return;
@@ -38,7 +29,8 @@ public class CouponService
         {
             product.setCoupon(coupon);
             product.setCouponApplied(true);
-        } else {
+        } else
+        {
             product.setCoupon(null);
             product.setCouponApplied(false);
         }
@@ -69,7 +61,6 @@ public class CouponService
         of1.setDiscountPercent(new BigDecimal(10));
         coupons.add(of1);
         //System.out.println("Coupons got populated: "+coupons.size());
-
 
         of1 = new Coupon();
         of1.setCouponLabel("OFFR002");

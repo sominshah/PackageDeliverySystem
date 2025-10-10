@@ -2,11 +2,13 @@ package com.product.delivery.system.features.pricing;
 import com.product.delivery.system.interfaces.Rate;
 import com.product.delivery.system.models.Product;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class DeliveryCostCalculator
 {
     private static Rate baseRate;
     private final BigDecimal weightMultiplicand = new BigDecimal(10);
-    BigDecimal distanceMultiplicand = new BigDecimal(5);
+    private final BigDecimal distanceMultiplicand = new BigDecimal(5);
     public static void addBaseRate(Rate rate)
     {
         baseRate = rate;
@@ -20,7 +22,7 @@ public class DeliveryCostCalculator
         BigDecimal discount= new BigDecimal(0);
         if(product.isCouponApplied())
         {
-            discount = finalDeliveryCost.multiply(product.getCoupon().getDiscountPercent()).divide(new BigDecimal(100));
+            discount = finalDeliveryCost.multiply(product.getCoupon().getDiscountPercent()).divide(new BigDecimal(100),RoundingMode.FLOOR);
             finalDeliveryCost = finalDeliveryCost.subtract(discount);
         }
         product.setDiscount(discount);

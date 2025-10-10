@@ -21,10 +21,10 @@ public class App
                     try
                     {
                         return new int[]{Integer.parseInt(firstLineSplit[0]), Integer.parseInt(firstLineSplit[1])};
-                    } catch (NumberFormatException ignored) {
+                    } catch (NumberFormatException ignored)
+                    {
 
                     }
-
 
             }
         }
@@ -58,58 +58,61 @@ public class App
             }
 
         }
-        if (counter < numberOfPackages) {
+        if (counter < numberOfPackages)
+        {
             System.err.println("Warning: expected " + numberOfPackages + " packages but read " + counter);
         }
         return products;
-
     }
 
     public static boolean readVehicles(Scanner scanner)
     {
-        if (!scanner.hasNextLine()) {
+        if (!scanner.hasNextLine())
+        {
             System.err.println("Vehicle information missing: <no_of_vehicles> <max_speed> <max_carriable_weight>");
             return false;
         }
         String vehicleLine = scanner.nextLine().trim();
         String[] parts = vehicleLine.split("\\s+");
-        if (parts.length < 3) {
+        if (parts.length < 3)
+        {
             System.err.println("Vehicle information incomplete: <no_of_vehicles> <max_speed> <max_carriable_weight>");
             return false;
         }
 
-        try {
+        try
+        {
             int numberOfVehicles = Integer.parseInt(parts[0]);
             int maxSpeed = Integer.parseInt(parts[1]);
             int maxCarriableWeight = Integer.parseInt(parts[2]);
             ProductDeliverySystem.addVehicles(numberOfVehicles, maxSpeed, maxCarriableWeight);
             return true;
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException e)
+        {
             System.err.println("Invalid vehicle numbers");
             return false;
         }
     }
-    public static void firstChallenge() {
+    public static void firstChallenge()
+    {
         try (Scanner scanner = new Scanner(System.in)) {
             int[] header = readHeader(scanner);
             if (header == null) return;
 
             ProductDeliverySystem system = ProductDeliverySystem.getInstance(new BigDecimal(header[0]));
             readProducts(scanner, header[1], system);
-
             system.printDeliveryCost();
         }
     }
-    public static void secondChallenge() {
-        try (Scanner scanner = new Scanner(System.in)) {
+    public static void secondChallenge()
+    {
+        try (Scanner scanner = new Scanner(System.in))
+        {
             int[] header = readHeader(scanner);
             if (header == null) return;
-
             ProductDeliverySystem system = ProductDeliverySystem.getInstance(new BigDecimal(header[0]));
             readProducts(scanner, header[1], system);
-
             if (!readVehicles(scanner)) return;
-
             system.printDeliveryCostWithEstimatedTime();
         }
     }
@@ -127,7 +130,8 @@ public class App
         System.out.println("  3) Exit");
         System.out.print("Enter choice [1-3]: ");
         String line = null;
-        try {
+        try
+        {
             if (!menuScanner.hasNextLine()) break;
             line = menuScanner.nextLine().trim();
             if (line.isEmpty()) {

@@ -1,7 +1,5 @@
 package com.product.delivery.system.models;
-
 import com.product.delivery.system.interfaces.Rate;
-
 import java.math.BigDecimal;
 
 public class BaseRate implements Rate

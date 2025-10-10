@@ -1,7 +1,5 @@
 package com.product.delivery.system.models;
-
 import com.product.delivery.system.interfaces.Criteria;
-
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -25,22 +23,28 @@ public class Coupon
     {
         return couponId;
     }
-    public String getCouponLabel() {
+    public String getCouponLabel()
+    {
         return couponLabel;
     }
-    public void setCouponLabel(String couponLabel) {
+    public void setCouponLabel(String couponLabel)
+    {
         this.couponLabel = couponLabel;
     }
-    public Criteria<Product> getCriteria() {
+    public Criteria<Product> getCriteria()
+    {
         return criteria;
     }
-    public void setCriteria(Criteria<Product> criteria) {
+    public void setCriteria(Criteria<Product> criteria)
+    {
         this.criteria = criteria;
     }
-    public BigDecimal getDiscountPercent() {
+    public BigDecimal getDiscountPercent()
+    {
         return discountPercentage;
     }
-    public void setDiscountPercent(BigDecimal discountPercent) {
+    public void setDiscountPercent(BigDecimal discountPercent)
+    {
         this.discountPercentage= discountPercent;
     }
 }

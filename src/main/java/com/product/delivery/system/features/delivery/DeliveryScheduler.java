@@ -14,18 +14,16 @@ public class DeliveryScheduler
 
     public void scheduleDeliveries(ProductService productService, VehicleService vehicleService)
     {
-        List<Product> remainingProducts = new ArrayList<>(productService.getProducts());
+        List<Product> remainingProducts = productService.getProducts();
         PriorityQueue<Vehicle> vehicleQueue = new PriorityQueue<>(Comparator.comparing(Vehicle::getAvailableAt));
         vehicleQueue.addAll(vehicleService.getVehicles());
         if (vehicleQueue.isEmpty()) return;
-
-
-        int tripNo=0;
+        //int tripNo=0;
         BigDecimal tripStart=null;
         List<Product> deliveries=null;
         while(!remainingProducts.isEmpty())
         {
-            tripNo++;
+            //tripNo++;
             Vehicle vehicle = vehicleQueue.poll();
             if(vehicle == null) break;
             tripStart=vehicle.getAvailableAt();
@@ -48,30 +46,22 @@ public class DeliveryScheduler
             }
 
             BigDecimal farthestDistance = BigDecimal.ZERO;
-            for(Product p : deliveries) if(p.getDistance().compareTo(farthestDistance)>0)farthestDistance=p.getDistance();
             BigDecimal speed= vehicle.calculateSpeed();
-            //System.out.println("Trip items: "+deliveries.size()+" Farthest Distance: "+farthestDistance.toPlainString()+" Speed: "+speed.toPlainString());
             for (Product p : deliveries)
             {
+                if(p.getDistance().compareTo(farthestDistance)>0)farthestDistance=p.getDistance();
                BigDecimal travelTimePrecise = p.getDistance().divide(speed,2 ,RoundingMode.DOWN);
-               BigDecimal deliveryTimePrecise = tripStart.add(travelTimePrecise);
-               BigDecimal deliveryTimeDisplay = deliveryTimePrecise.setScale(2, RoundingMode.DOWN);
-               p.setDeliveryTimePrecise(deliveryTimePrecise);
+               BigDecimal deliveryTimeDisplay  = tripStart.add(travelTimePrecise);
                p.setDeliveryTimeDisplay(deliveryTimeDisplay);
                p.setScheduled(true);
-//                //System.out.println("  Product="+p.getPackageLabel()+" dist=" +p.getDistance().toPlainString()
-//                        +" travelPrecise="+travelTimePrecise.toPlainString()
-//                        +" deliveryPrecise="+deliveryTimePrecise.toPlainString()
-//                        +" deliveryDisplay="+deliveryTimeDisplay.toPlainString());
             }
-
             BigDecimal roundTripPrecise = farthestDistance.multiply(BigDecimal.valueOf(2)).divide(speed, 2, RoundingMode.DOWN);
             BigDecimal newAvailableAtPrecise = tripStart.add(roundTripPrecise);
             vehicle.setAvailableAt(newAvailableAtPrecise);
-
             vehicleQueue.offer(vehicle);
             remainingProducts.removeAll(deliveries);
         }
+
     }
     public  List<Product> getBestProducts(List<Product> remainingProducts, BigDecimal payloadCapacity)
     {

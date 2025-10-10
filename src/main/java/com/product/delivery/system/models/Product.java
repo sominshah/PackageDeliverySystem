@@ -96,12 +96,6 @@ public class Product
     public void setPackageLabel(String packageLabel) {
         this.packageLabel = packageLabel;
     }
-
-    public void setDeliveryTimePrecise(BigDecimal dt) {
-        this.deliveryTimePrecise = dt;
-    }
-    public BigDecimal getDeliveryTimePrecise() { return deliveryTimePrecise; }
-
     public void setDeliveryTimeDisplay(BigDecimal dtDisplay) {
         this.deliveryTimeDisplay = dtDisplay;
     }
