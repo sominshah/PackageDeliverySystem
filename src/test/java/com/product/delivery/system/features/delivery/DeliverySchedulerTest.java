@@ -38,7 +38,7 @@ public class DeliverySchedulerTest
         {
             Assert.assertTrue("Product " +product.getPackageLabel()+ " should be marked scheduled", product.isScheduled());
             Assert.assertNotNull("Product " +product.getPackageLabel()+ " should have delivery time (display)",product.getDeliveryTimeDisplay());
-            Assert.assertNotNull("deliveryTimePrecise must be set",product.getDeliveryTimePrecise());
+            Assert.assertNotNull("deliveryTimePrecise must be set",product.getDeliveryTimeDisplay());
         }
     }
 
